@@ -1,9 +1,22 @@
 import { StatusBar } from "expo-status-bar";
-import { ImageBackground, StyleSheet } from "react-native";
+import { ImageBackground, SafeAreaView, StyleSheet } from "react-native";
 import StartGameScreen from "./screens/StartGameScreen";
 import { LinearGradient } from "expo-linear-gradient";
+import { useState } from "react";
+import GameScreen from "./screens/GameScreen";
 
 export default function App() {
+  const [pickNumber, setPickNumber] = useState("");
+
+  function pickHandler(value) {
+    setPickNumber(value);
+  }
+
+  let screen = <StartGameScreen pickHandler={pickHandler} />;
+
+  if (pickNumber) {
+    screen = <GameScreen />;
+  }
   return (
     <>
       <StatusBar style="light" />
@@ -14,7 +27,7 @@ export default function App() {
           style={styles.app}
           imageStyle={{ opacity: 0.15 }}
         >
-          <StartGameScreen />
+          <SafeAreaView style={styles.app}>{screen}</SafeAreaView>
         </ImageBackground>
       </LinearGradient>
     </>
@@ -24,5 +37,6 @@ export default function App() {
 const styles = StyleSheet.create({
   app: {
     flex: 1,
+    paddingTop: 10,
   },
 });
