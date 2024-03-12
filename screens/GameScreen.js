@@ -1,8 +1,10 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import Title from "../components/Title";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NumberContainer from "../components/NumberContainer";
 import PrimaryButton from "../components/PrimaryButton";
+import Card from "../components/Card";
+import LogoText from "../components/LogoText";
 
 function randomNumber(min, max, exclude) {
   const rnd = Math.floor(Math.random() * (max - min) + min);
@@ -13,22 +15,64 @@ function randomNumber(min, max, exclude) {
   }
 }
 
-export default function GameScreen({ userNumber }) {
-  const rn = randomNumber(1, 100, userNumber);
-  console.log(rn);
+let minBoundary = 1;
+let maxBoundary = 100;
+
+export default function GameScreen({ userNumber, gameOver }) {
+  const rn = randomNumber(minBoundary, maxBoundary, userNumber);
   const [guessNumber, setGuessNumber] = useState(rn);
+
+  useEffect(() => {
+    if (guessNumber === userNumber) {
+      gameOver();
+    }
+  }, [guessNumber]);
+
+  function checker(direction) {
+    console.log(guessNumber);
+    console.log(minBoundary, maxBoundary);
+    if (
+      (direction === "lower" && guessNumber < userNumber) ||
+      (direction === "higher" && guessNumber > userNumber)
+    ) {
+      Alert.alert("Chal Jhootay", "Jhoot bolty ho", [
+        { text: "Okay", style: "cancel" },
+      ]);
+      return;
+    }
+
+    if (direction === "lower") {
+      maxBoundary = guessNumber;
+
+      const n = randomNumber(minBoundary, maxBoundary, guessNumber);
+      setGuessNumber(n);
+    } else {
+      minBoundary = guessNumber + 1;
+
+      const n = randomNumber(minBoundary, maxBoundary, guessNumber);
+      setGuessNumber(n);
+    }
+  }
 
   return (
     <View style={styles.screen}>
       <Title>Opponent's Guess</Title>
       <NumberContainer>{guessNumber}</NumberContainer>
-      <View>
-        <Text>higher or Lower?</Text>
-        <View>
-          <PrimaryButton>+</PrimaryButton>
-          <PrimaryButton>-</PrimaryButton>
+      <Card>
+        <LogoText>higher or Lower?</LogoText>
+        <View style={{ flexDirection: "row", paddingTop: 10 }}>
+          <View style={{ flex: 1 }}>
+            <PrimaryButton onPress={() => checker("lower")}>
+              Lower
+            </PrimaryButton>
+          </View>
+          <View style={{ flex: 1 }}>
+            <PrimaryButton onPress={() => checker("higher")}>
+              Higher
+            </PrimaryButton>
+          </View>
         </View>
-      </View>
+      </Card>
     </View>
   );
 }
