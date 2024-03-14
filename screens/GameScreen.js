@@ -5,6 +5,7 @@ import NumberContainer from "../components/NumberContainer";
 import PrimaryButton from "../components/PrimaryButton";
 import Card from "../components/Card";
 import LogoText from "../components/LogoText";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 
 function randomNumber(min, max, exclude) {
   const rnd = Math.floor(Math.random() * (max - min) + min);
@@ -19,7 +20,7 @@ let minBoundary = 1;
 let maxBoundary = 100;
 
 export default function GameScreen({ userNumber, gameOver }) {
-  const rn = randomNumber(minBoundary, maxBoundary, userNumber);
+  const rn = randomNumber(1, 100, userNumber);
   const [guessNumber, setGuessNumber] = useState(rn);
 
   useEffect(() => {
@@ -43,12 +44,10 @@ export default function GameScreen({ userNumber, gameOver }) {
 
     if (direction === "lower") {
       maxBoundary = guessNumber;
-
       const n = randomNumber(minBoundary, maxBoundary, guessNumber);
       setGuessNumber(n);
     } else {
       minBoundary = guessNumber + 1;
-
       const n = randomNumber(minBoundary, maxBoundary, guessNumber);
       setGuessNumber(n);
     }
@@ -63,12 +62,12 @@ export default function GameScreen({ userNumber, gameOver }) {
         <View style={{ flexDirection: "row", paddingTop: 10 }}>
           <View style={{ flex: 1 }}>
             <PrimaryButton onPress={() => checker("lower")}>
-              Lower
+              <AntDesign name="minus" size={24} />
             </PrimaryButton>
           </View>
           <View style={{ flex: 1 }}>
             <PrimaryButton onPress={() => checker("higher")}>
-              Higher
+              <AntDesign name="plus" size={24} />
             </PrimaryButton>
           </View>
         </View>
