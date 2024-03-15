@@ -9,18 +9,20 @@ import GameOverScreen from "./screens/GameOverScreen";
 export default function App() {
   const [pickNumber, setPickNumber] = useState("");
   const [isGameOver, setIsGameOver] = useState(true);
+  const [guessNumber, setGuessNumber] = useState(0);
 
   function pickHandler(value) {
     setPickNumber(value);
     setIsGameOver(false);
   }
 
-  function gameOver() {
+  function gameOver(totalGuess) {
+    setGuessNumber(totalGuess);
     setIsGameOver(true);
   }
 
   function restartGame() {
-    setIsGameOver(false);
+    setIsGameOver(true);
     setPickNumber("");
   }
 
@@ -31,7 +33,13 @@ export default function App() {
   }
 
   if (isGameOver && pickNumber) {
-    screen = <GameOverScreen restartGame={restartGame} />;
+    screen = (
+      <GameOverScreen
+        restartGame={restartGame}
+        userNumber={pickNumber}
+        roundsNumber={guessNumber}
+      />
+    );
   }
   return (
     <>
@@ -41,7 +49,7 @@ export default function App() {
           source={require("./assets/images/dice.png")}
           resizeMode="cover"
           style={styles.app}
-          imageStyle={{ opacity: 0.15 }}
+          imageStyle={{ opacity: 0.35 }}
         >
           <SafeAreaView style={styles.app}>{screen}</SafeAreaView>
         </ImageBackground>

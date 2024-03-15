@@ -2,7 +2,11 @@ import { View, Image, StyleSheet, Text } from "react-native";
 import Title from "../components/Title";
 import PrimaryButton from "../components/PrimaryButton";
 
-export default function GameOverScreen({ restartGame }) {
+export default function GameOverScreen({
+  roundsNumber,
+  userNumber,
+  restartGame,
+}) {
   return (
     <View style={styles.rootScreen}>
       <Title>GameOver !</Title>
@@ -13,8 +17,9 @@ export default function GameOverScreen({ restartGame }) {
         />
       </View>
       <Text style={styles.line}>
-        Your need <Text style={styles.highlight}>X</Text> chances to guess the
-        number <Text style={styles.highlight}> Y</Text>.
+        Your used <Text style={styles.highlight}>{roundsNumber}</Text> chances
+        to guess the right number which was
+        <Text style={styles.highlight}> {userNumber}</Text>.
       </Text>
       <PrimaryButton onPress={restartGame}>Start New Game</PrimaryButton>
     </View>

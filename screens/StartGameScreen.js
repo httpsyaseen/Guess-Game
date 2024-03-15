@@ -13,7 +13,6 @@ export default function StartGameScreen({ pickHandler }) {
 
   function resetHandler() {
     setEnteredNumber("");
-    pickHandler(enteredNumber);
   }
 
   function inputChecker() {
